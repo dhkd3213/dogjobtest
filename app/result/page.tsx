@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 
 const results = [
@@ -33,26 +33,32 @@ export default function Result() {
     setResult(result);
   }, [searchParams]);
 
-  if (!result) return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-purple-400 to-blue-500">
-      <p className="text-white text-xl font-semibold">결과를 계산 중입니다...</p>
-    </div>
-  );
+  if (!result) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-purple-400 to-blue-500">
+        <p className="text-white text-xl font-semibold">결과를 계산 중입니다...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-400 to-blue-500 text-white px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md text-center space-y-8">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4">당신의 전생 직업은...</h1>
-        <div className="bg-white text-purple-600 rounded-lg shadow-xl p-6 transform hover:scale-105 transition duration-300">
-          <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">{result.job}</h2>
-          <p className="text-lg sm:text-xl">{result.description}</p>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-purple-400 to-blue-500">
+      <p className="text-white text-xl font-semibold">결과를 로드 중입니다...</p>
+    </div>}>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-400 to-blue-500 text-white px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md text-center space-y-8">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4">당신의 전생 직업은...</h1>
+          <div className="bg-white text-purple-600 rounded-lg shadow-xl p-6 transform hover:scale-105 transition duration-300">
+            <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">{result.job}</h2>
+            <p className="text-lg sm:text-xl">{result.description}</p>
+          </div>
+          <Link href="/">
+            <button className="mt-8 bg-white text-purple-600 font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-purple-100 transition duration-300 transform hover:scale-105 active:scale-95">
+              다시 테스트하기
+            </button>
+          </Link>
         </div>
-        <Link href="/">
-          <button className="mt-8 bg-white text-purple-600 font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-purple-100 transition duration-300 transform hover:scale-105 active:scale-95">
-            다시 테스트하기
-          </button>
-        </Link>
       </div>
-    </div>
+    </Suspense>
   );
 }
