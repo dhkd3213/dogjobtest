@@ -37,16 +37,23 @@ export default function ClientResult() {
 
   return (
     <div className="w-full max-w-md text-center space-y-8">
-      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white">당신의 전생 직업은...</h1>
+      {/* ... (기존 코드 유지) */}
       <div className="bg-white text-purple-600 rounded-lg shadow-xl p-6 transform hover:scale-105 transition duration-300">
         <h2 className="text-3xl sm:text-4xl font-extrabold mb-4">{result.job}</h2>
         <p className="text-lg sm:text-xl">{result.description}</p>
       </div>
-      <Link href="/">
-        <button className="mt-8 bg-white text-purple-600 font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-purple-100 transition duration-300 transform hover:scale-105 active:scale-95">
-          다시 테스트하기
-        </button>
-      </Link>
+      <div className="space-y-4">
+        <Link href="/">
+          <button className="bg-white text-purple-600 font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-purple-100 transition duration-300 transform hover:scale-105 active:scale-95">
+            다시 테스트하기
+          </button>
+        </Link>
+        <Link href={`/image-generation?job=${encodeURIComponent(result.job)}`}>
+          <button className="bg-green-500 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover:bg-green-600 transition duration-300 transform hover:scale-105 active:scale-95">
+            이미지 변환
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }
